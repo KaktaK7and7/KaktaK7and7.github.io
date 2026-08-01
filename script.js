@@ -1,15 +1,31 @@
 const imageCache = new Map();
+
+async function fetchBase64Text(path) {
+  const direct = await fetch(path);
+  if (direct.ok) return direct.text();
+
+  const parts = [];
+  for (let index = 1; index <= 20; index += 1) {
+    const response = await fetch(`${path}.part${index}`);
+    if (!response.ok) break;
+    parts.push(await response.text());
+  }
+
+  if (!parts.length) throw new Error(`Не удалось загрузить ${path}`);
+  return parts.join('');
+}
+
 async function loadBase64Image(path) {
   if (!imageCache.has(path)) {
-    imageCache.set(path, fetch(path).then(response => {
-      if (!response.ok) throw new Error(`Не удалось загрузить ${path}`);
-      return response.text();
-    }).then(text => `data:image/webp;base64,${text.trim()}`));
+    imageCache.set(
+      path,
+      fetchBase64Text(path).then(text => `data:image/webp;base64,${text.trim()}`)
+    );
   }
   return imageCache.get(path);
 }
 
-const inlineImageTasks = [...document.querySelectorAll('[data-b64-src]')].map(async element => {
+[...document.querySelectorAll('[data-b64-src]')].forEach(async element => {
   try {
     const source = await loadBase64Image(element.dataset.b64Src);
     if (element.tagName === 'IMG') element.src = source;
