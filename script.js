@@ -1,6 +1,18 @@
 const imageCache = new Map();
 
+const imageAliases = {
+  'assets/prim-home.webp.b64': 'assets/v3/prim-home.webp.b64',
+  'assets/prim-catalog.webp.b64': 'assets/v3/prim-catalog.webp.b64',
+  'assets/prim-product.webp.b64': 'assets/v3/prim-product.webp.b64',
+  'assets/ziren-desktop.webp.b64': 'assets/v3/ziren-desktop.webp.b64',
+  'assets/ziren-web-home.webp.b64': 'assets/v3/ziren-web-home.webp.b64',
+  'assets/ziren-settings.webp.b64': 'assets/v3/ziren-settings.webp.b64',
+  'assets/ziren-chronicle-app.webp.b64': 'assets/v4/ziren-chronicle-app.webp.b64'
+};
+
 async function fetchBase64Text(path) {
+  path = imageAliases[path] || path;
+
   const direct = await fetch(path);
   if (direct.ok) return direct.text();
 
