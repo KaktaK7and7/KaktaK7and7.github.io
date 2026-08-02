@@ -45,8 +45,8 @@ async function loadBase64Image(path) {
 
 const chipOne = document.querySelector('.chip-one');
 const chipTwo = document.querySelector('.chip-two');
-if (chipOne) chipOne.innerHTML = '<b>02</b> Авторский AI-продукт';
-if (chipTwo) chipTwo.innerHTML = '<b>01</b> Коммерческий сайт';
+if (chipOne) chipOne.innerHTML = '<b>01</b> Авторский AI-продукт';
+if (chipTwo) chipTwo.innerHTML = '<b>02</b> Коммерческий сайт';
 
 const year = document.querySelector('#year');
 if (year) year.textContent = new Date().getFullYear();
